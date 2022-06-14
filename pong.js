@@ -26,8 +26,8 @@ function setup() {
   ballPosY = height / 2;
   ballPosX = width / 2;
   ballTam = 20;
-  ballSpeedX = random(-3, 3);
-  ballSpeedY = random(-3, 3);
+  ballSpeedX = random(-1, 7);
+  ballSpeedY = random(-1, 7);
 
   //Raqueta Izquierda
   raqIzqPosY = height / 2;
