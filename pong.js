@@ -26,8 +26,8 @@ function setup() {
   ballPosY = height / 2;
   ballPosX = width / 2;
   ballTam = 20;
-  ballSpeedX = random(-10, 10);
-  ballSpeedY = random(-10, 10);
+  ballSpeedX = random(-3, 3);
+  ballSpeedY = random(-3, 3);
 
   //Raqueta Izquierda
   raqIzqPosY = height / 2;
@@ -38,6 +38,7 @@ function setup() {
   raqDerPosY = height / 2;
   raqDerWidth = 20;
   raqDerHeight = raqDerWidth * 4;
+  
 }
 
 function draw() {
@@ -59,6 +60,14 @@ function draw() {
 
   //Raqueta Derecha
   createRaq(width - margin, raqDerPosY, raqDerWidth, raqDerHeight);
+  
+  if(ballPosY <= 0){
+    ballSpeedY *= -1;
+  }
+  
+  if(ballPosY >= height){
+    ballSpeedY *= -1;
+  }
 }
 
 function ball(posX, posY, tam) {
