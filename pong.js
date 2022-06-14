@@ -38,7 +38,6 @@ function setup() {
   raqDerPosY = height / 2;
   raqDerWidth = 20;
   raqDerHeight = raqDerWidth * 4;
-  
 }
 
 function draw() {
@@ -51,7 +50,7 @@ function draw() {
 
   //Pelota
   ball(ballPosX, ballPosY, ballTam, ballTam);
-  
+
   ballPosX += ballSpeedX;
   ballPosY += ballSpeedY;
 
@@ -60,13 +59,46 @@ function draw() {
 
   //Raqueta Derecha
   createRaq(width - margin, raqDerPosY, raqDerWidth, raqDerHeight);
-  
-  if(ballPosY <= 0){
+
+  //Colisión pelota ariiba y abajo
+  if (ballPosY <= 0) {
     ballSpeedY *= -1;
   }
-  
-  if(ballPosY >= height){
+
+  if (ballPosY >= height) {
     ballSpeedY *= -1;
+  }
+
+  //Colisión pelota con raqueta Izquierda
+  if (ballPosX <= margin) {
+    if (
+      ballPosY <= raqIzqPosY &&
+      ballPosY >= raqIzqPosY - raqIzqHeight / 2
+    ) {
+      ballSpeedX *= -1;
+    }
+    if (
+      ballPosY >= raqIzqPosY &&
+      ballPosY <= raqIzqPosY + raqIzqHeight / 2
+    ) {
+      ballSpeedX *= -1;
+    }
+  }
+
+  //Colisión pelota con raqueta Derecha
+  if (ballPosX >= width - margin) {
+    if (
+      ballPosY <= raqDerPosY &&
+      ballPosY >= raqDerPosY - raqDerHeight / 2
+    ) {
+      ballSpeedX *= -1;
+    }
+    if (
+      ballPosY >= raqDerPosY &&
+      ballPosY <= raqDerPosY + raqDerHeight / 2
+    ) {
+      ballSpeedX *= -1;
+    }
   }
 }
 
