@@ -1,4 +1,5 @@
 const margin = 30;
+const raqSpeed = 10;
 
 //Raqueta Izquierda
 var raqIzqPosY;
@@ -71,34 +72,38 @@ function draw() {
 
   //Colisión pelota con raqueta Izquierda
   if (ballPosX <= margin) {
-    if (
-      ballPosY <= raqIzqPosY &&
-      ballPosY >= raqIzqPosY - raqIzqHeight / 2
-    ) {
+    if (ballPosY <= raqIzqPosY && ballPosY >= raqIzqPosY - raqIzqHeight / 2) {
       ballSpeedX *= -1;
     }
-    if (
-      ballPosY >= raqIzqPosY &&
-      ballPosY <= raqIzqPosY + raqIzqHeight / 2
-    ) {
+    if (ballPosY >= raqIzqPosY && ballPosY <= raqIzqPosY + raqIzqHeight / 2) {
       ballSpeedX *= -1;
     }
   }
 
   //Colisión pelota con raqueta Derecha
   if (ballPosX >= width - margin) {
-    if (
-      ballPosY <= raqDerPosY &&
-      ballPosY >= raqDerPosY - raqDerHeight / 2
-    ) {
+    if (ballPosY <= raqDerPosY && ballPosY >= raqDerPosY - raqDerHeight / 2) {
       ballSpeedX *= -1;
     }
-    if (
-      ballPosY >= raqDerPosY &&
-      ballPosY <= raqDerPosY + raqDerHeight / 2
-    ) {
+    if (ballPosY >= raqDerPosY && ballPosY <= raqDerPosY + raqDerHeight / 2) {
       ballSpeedX *= -1;
     }
+  }
+  
+  if (keyIsDown(UP_ARROW)) {
+    raqIzqPosY -= raqSpeed;
+  }
+  
+  if(keyIsDown(DOWN_ARROW)){
+    raqIzqPosY += raqSpeed;
+  }
+  
+  if(keyIsDown(LEFT_ARROW)){
+    raqDerPosY -= raqSpeed;
+  }
+  
+  if(keyIsDown(RIGHT_ARROW)){
+    raqDerPosY += raqSpeed;
   }
 }
 
@@ -110,24 +115,4 @@ function ball(posX, posY, tam) {
 function createRaq(posX, posY, w, h) {
   fill(255);
   rect(posX, posY, w, h);
-}
-
-function keyPressed() {
-  //Raqueta Izquierda
-  if (key == "w") {
-    raqIzqPosY -= 10;
-  }
-
-  if (key == "s") {
-    raqIzqPosY += 10;
-  }
-
-  //Raqueta Derecha
-  if (key == "e") {
-    raqDerPosY -= 10;
-  }
-
-  if (key == "d") {
-    raqDerPosY += 10;
-  }
 }
