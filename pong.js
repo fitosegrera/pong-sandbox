@@ -1,5 +1,6 @@
 const margin = 30;
 const raqSpeed = 10;
+var bgr, bgg, bgb;
 
 //Score
 let scoreDer = 0;
@@ -27,7 +28,11 @@ function setup() {
   rectMode(CENTER);
   textAlign(CENTER);
   textSize(24);
-  noStroke();
+ 
+  //Background
+  bgr = 0;
+  bgg = 0;
+  bgb = 0;
 
   //Pelota
   ballPosY = height / 2;
@@ -48,16 +53,16 @@ function setup() {
 }
 
 function draw() {
-  background(0);
-  
+  background(bgr, bgg, bgb);
+
   //Score
-  text(scoreIzq, width/2 - margin, margin);
-  text(scoreDer, width/2 + margin, margin);
+  text(scoreIzq, width / 2 - margin, margin);
+  text(scoreDer, width / 2 + margin, margin);
 
   //Malla
   stroke(255);
   line(width / 2, 0, width / 2, height);
-  noStroke();
+  
 
   //Pelota
   ball(ballPosX, ballPosY, ballTam, ballTam);
@@ -99,34 +104,42 @@ function draw() {
       ballSpeedX *= -1;
     }
   }
-  
+
   //Marca punto izquierda
-  if(ballPosX < 0){
+  if (ballPosX < 0) {
     ballPosX = width / 2;
     ballPosY = height / 2;
+    scoreDer++;
+
+    bgr = random(255);
+    bgg = random(255);
+    bgb = random(255);
   }
-  
+
   //Marca punto derecha
-  if(ballPosX > width){
+  if (ballPosX > width) {
     ballPosX = width / 2;
     ballPosY = height / 2;
+    scoreIzq++;
+    bgr = random(255);
+    bgg = random(255);
+    bgb = random(255);
   }
-  
-  
+
   //Controles raquetas
   if (keyIsDown(UP_ARROW)) {
     raqIzqPosY -= raqSpeed;
   }
-  
-  if(keyIsDown(DOWN_ARROW)){
+
+  if (keyIsDown(DOWN_ARROW)) {
     raqIzqPosY += raqSpeed;
   }
-  
-  if(keyIsDown(LEFT_ARROW)){
+
+  if (keyIsDown(LEFT_ARROW)) {
     raqDerPosY -= raqSpeed;
   }
-  
-  if(keyIsDown(RIGHT_ARROW)){
+
+  if (keyIsDown(RIGHT_ARROW)) {
     raqDerPosY += raqSpeed;
   }
 }
@@ -138,7 +151,8 @@ function ball(posX, posY, tam) {
 
 function createRaq(posX, posY, w, h) {
   fill(255);
+  stroke(0)
   rect(posX, posY, w, h);
 }
 
-
+function keyPressed() {}
