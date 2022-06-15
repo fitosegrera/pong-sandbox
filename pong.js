@@ -1,6 +1,10 @@
 const margin = 30;
 const raqSpeed = 10;
 
+//Score
+let scoreDer = 0;
+let scoreIzq = 0;
+
 //Raqueta Izquierda
 var raqIzqPosY;
 var raqIzqWidth;
@@ -21,6 +25,8 @@ var ballTam;
 function setup() {
   createCanvas(700, 500);
   rectMode(CENTER);
+  textAlign(CENTER);
+  textSize(24);
   noStroke();
 
   //Pelota
@@ -43,6 +49,10 @@ function setup() {
 
 function draw() {
   background(0);
+  
+  //Score
+  text(scoreIzq, width/2 - margin, margin);
+  text(scoreDer, width/2 + margin, margin);
 
   //Malla
   stroke(255);
@@ -90,6 +100,20 @@ function draw() {
     }
   }
   
+  //Marca punto izquierda
+  if(ballPosX < 0){
+    ballPosX = width / 2;
+    ballPosY = height / 2;
+  }
+  
+  //Marca punto derecha
+  if(ballPosX > width){
+    ballPosX = width / 2;
+    ballPosY = height / 2;
+  }
+  
+  
+  //Controles raquetas
   if (keyIsDown(UP_ARROW)) {
     raqIzqPosY -= raqSpeed;
   }
@@ -116,3 +140,5 @@ function createRaq(posX, posY, w, h) {
   fill(255);
   rect(posX, posY, w, h);
 }
+
+
