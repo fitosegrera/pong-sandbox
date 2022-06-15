@@ -112,6 +112,22 @@ function draw() {
       }
     }
 
+    //Limites Raqueta Izquierda
+    if (raqIzqPosY <= raqIzqHeight / 2) {
+      raqIzqPosY = raqIzqHeight / 2;
+    }
+    if (raqIzqPosY >= height - raqIzqHeight / 2) {
+      raqIzqPosY = height - raqIzqHeight / 2;
+    }
+
+    //Limites Raqueta Derecha
+    if (raqDerPosY <= raqDerHeight / 2) {
+      raqDerPosY = raqDerHeight / 2;
+    }
+    if (raqDerPosY >= height - raqDerHeight / 2) {
+      raqDerPosY = height - raqDerHeight / 2;
+    }
+
     //Marca punto izquierda
     if (ballPosX < 0) {
       ballPosX = width / 2;
