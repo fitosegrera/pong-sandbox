@@ -1,6 +1,9 @@
 const margin = 30;
 const raqSpeed = 10;
 var bgr, bgg, bgb;
+const maxScore = 3;
+var finDeJuego = false;
+var ganador = "";
 
 //Score
 let scoreDer = 0;
@@ -22,13 +25,14 @@ var ballPosX;
 var ballSpeedX;
 var ballSpeedY;
 var ballTam;
+var ballSpeedMax;
 
 function setup() {
-  createCanvas(700, 500);
+  createCanvas(windowWidth, windowHeight);
   rectMode(CENTER);
   textAlign(CENTER);
   textSize(24);
- 
+
   //Background
   bgr = 0;
   bgg = 0;
@@ -38,8 +42,9 @@ function setup() {
   ballPosY = height / 2;
   ballPosX = width / 2;
   ballTam = 20;
-  ballSpeedX = random(-1, 7);
-  ballSpeedY = random(-1, 7);
+  ballSpeedMax = 8;
+  ballSpeedX = random(-ballSpeedMax, ballSpeedMax);
+  ballSpeedY = random(-ballSpeedMax, ballSpeedMax);
 
   //Raqueta Izquierda
   raqIzqPosY = height / 2;
@@ -53,94 +58,123 @@ function setup() {
 }
 
 function draw() {
-  background(bgr, bgg, bgb);
+  //Estado Jugando
+  if (finDeJuego == false) {
+    background(bgr, bgg, bgb);
 
-  //Score
-  text(scoreIzq, width / 2 - margin, margin);
-  text(scoreDer, width / 2 + margin, margin);
+    //Score
+    textSize(24);
+    text(scoreIzq, width / 2 - margin, margin);
+    text(scoreDer, width / 2 + margin, margin);
 
-  //Malla
-  stroke(255);
-  line(width / 2, 0, width / 2, height);
-  
+    //Malla
+    stroke(255);
+    line(width / 2, 0, width / 2, height);
 
-  //Pelota
-  ball(ballPosX, ballPosY, ballTam, ballTam);
+    //Pelota
+    ball(ballPosX, ballPosY, ballTam, ballTam);
 
-  ballPosX += ballSpeedX;
-  ballPosY += ballSpeedY;
+    ballPosX += ballSpeedX;
+    ballPosY += ballSpeedY;
 
-  //Raqueta Izquierda
-  createRaq(margin, raqIzqPosY, raqIzqWidth, raqIzqHeight);
+    //Raqueta Izquierda
+    createRaq(margin, raqIzqPosY, raqIzqWidth, raqIzqHeight);
 
-  //Raqueta Derecha
-  createRaq(width - margin, raqDerPosY, raqDerWidth, raqDerHeight);
+    //Raqueta Derecha
+    createRaq(width - margin, raqDerPosY, raqDerWidth, raqDerHeight);
 
-  //Colisión pelota ariiba y abajo
-  if (ballPosY <= 0) {
-    ballSpeedY *= -1;
-  }
-
-  if (ballPosY >= height) {
-    ballSpeedY *= -1;
-  }
-
-  //Colisión pelota con raqueta Izquierda
-  if (ballPosX <= margin) {
-    if (ballPosY <= raqIzqPosY && ballPosY >= raqIzqPosY - raqIzqHeight / 2) {
-      ballSpeedX *= -1;
+    //Colisión pelota ariiba y abajo
+    if (ballPosY <= 0) {
+      ballSpeedY *= -1;
     }
-    if (ballPosY >= raqIzqPosY && ballPosY <= raqIzqPosY + raqIzqHeight / 2) {
-      ballSpeedX *= -1;
+
+    if (ballPosY >= height) {
+      ballSpeedY *= -1;
     }
-  }
 
-  //Colisión pelota con raqueta Derecha
-  if (ballPosX >= width - margin) {
-    if (ballPosY <= raqDerPosY && ballPosY >= raqDerPosY - raqDerHeight / 2) {
-      ballSpeedX *= -1;
+    //Colisión pelota con raqueta Izquierda
+    if (ballPosX <= margin) {
+      if (ballPosY <= raqIzqPosY && ballPosY >= raqIzqPosY - raqIzqHeight / 2) {
+        ballSpeedX *= -1;
+      }
+      if (ballPosY >= raqIzqPosY && ballPosY <= raqIzqPosY + raqIzqHeight / 2) {
+        ballSpeedX *= -1;
+      }
     }
-    if (ballPosY >= raqDerPosY && ballPosY <= raqDerPosY + raqDerHeight / 2) {
-      ballSpeedX *= -1;
+
+    //Colisión pelota con raqueta Derecha
+    if (ballPosX >= width - margin) {
+      if (ballPosY <= raqDerPosY && ballPosY >= raqDerPosY - raqDerHeight / 2) {
+        ballSpeedX *= -1;
+      }
+      if (ballPosY >= raqDerPosY && ballPosY <= raqDerPosY + raqDerHeight / 2) {
+        ballSpeedX *= -1;
+      }
     }
-  }
 
-  //Marca punto izquierda
-  if (ballPosX < 0) {
-    ballPosX = width / 2;
-    ballPosY = height / 2;
-    scoreDer++;
+    //Marca punto izquierda
+    if (ballPosX < 0) {
+      ballPosX = width / 2;
+      ballPosY = height / 2;
+      scoreDer++;
 
-    bgr = random(255);
-    bgg = random(255);
-    bgb = random(255);
-  }
+      bgr = random(255);
+      bgg = random(255);
+      bgb = random(255);
 
-  //Marca punto derecha
-  if (ballPosX > width) {
-    ballPosX = width / 2;
-    ballPosY = height / 2;
-    scoreIzq++;
-    bgr = random(255);
-    bgg = random(255);
-    bgb = random(255);
-  }
+      ballSpeedMax = 8;
+      ballSpeedX = random(-ballSpeedMax, ballSpeedMax);
+      ballSpeedY = random(-ballSpeedMax, ballSpeedMax);
+    }
 
-  //Controles raquetas
-  if (keyIsDown(UP_ARROW)) {
-    raqIzqPosY -= raqSpeed;
-  }
+    //Marca punto derecha
+    if (ballPosX > width) {
+      ballPosX = width / 2;
+      ballPosY = height / 2;
+      scoreIzq++;
+      bgr = random(255);
+      bgg = random(255);
+      bgb = random(255);
 
-  if (keyIsDown(DOWN_ARROW)) {
-    raqIzqPosY += raqSpeed;
-  }
+      ballSpeedMax = 8;
+      ballSpeedX = random(-ballSpeedMax, ballSpeedMax);
+      ballSpeedY = random(-ballSpeedMax, ballSpeedMax);
+    }
 
-  if (keyIsDown(LEFT_ARROW)) {
-    raqDerPosY -= raqSpeed;
-  }
+    //Fin de Juego
+    if (scoreIzq >= maxScore) {
+      finDeJuego = true;
+      ganador = "Player 1";
+    }
 
-  if (keyIsDown(RIGHT_ARROW)) {
-    raqDerPosY += raqSpeed;
+    if (scoreDer >= maxScore) {
+      finDeJuego = true;
+      ganador = "Player 2";
+    }
+
+    //Controles raquetas
+    if (keyIsDown(UP_ARROW)) {
+      raqIzqPosY -= raqSpeed;
+    }
+
+    if (keyIsDown(DOWN_ARROW)) {
+      raqIzqPosY += raqSpeed;
+    }
+
+    if (keyIsDown(LEFT_ARROW)) {
+      raqDerPosY -= raqSpeed;
+    }
+
+    if (keyIsDown(RIGHT_ARROW)) {
+      raqDerPosY += raqSpeed;
+    }
+  } else {
+    background(0);
+    fill(random(255), random(255), random(255));
+    textSize(48);
+    text(ganador + " WINS!", width / 2, height / 2);
+    textSize(24);
+    text("Presione una tecla para continuar.", width / 2, height / 2 + 100);
   }
 }
 
@@ -151,8 +185,14 @@ function ball(posX, posY, tam) {
 
 function createRaq(posX, posY, w, h) {
   fill(255);
-  stroke(0)
+  stroke(0);
   rect(posX, posY, w, h);
 }
 
-function keyPressed() {}
+function keyPressed() {
+  if (finDeJuego == true) {
+    finDeJuego = false;
+    scoreIzq = 0;
+    scoreDer = 0;
+  }
+}
